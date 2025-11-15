@@ -1,27 +1,50 @@
 <?php 
+// config/Conexion.php
 
 class Conexion {
-
+    private static $instance = null;
     protected $db;
+    
     private $driver = "mysql";
     private $host = "localhost";
-    private $bd = "notas";
+    private $dbname = "sistema_notas_escolar";
     private $usuario = "root";
-    private $contraseña = "";
+    private $password = "";
+    private $charset = "utf8mb4";
 
-    public function __construct() {
+    private function __construct() {
         try {
-            $this->db = new PDO("{$this->driver}:host={$this->host};dbname={$this->bd}", $this->usuario, $this->contraseña);
-            $this->db->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+            $dsn = "{$this->driver}:host={$this->host};dbname={$this->dbname};charset={$this->charset}";
+            $options = [
+                PDO::ATTR_ERRMODE            => PDO::ERRMODE_EXCEPTION,
+                PDO::ATTR_DEFAULT_FETCH_MODE => PDO::FETCH_ASSOC,
+                PDO::ATTR_EMULATE_PREPARES   => false,
+            ];
             
-            return $this->db;
-        
+            $this->db = new PDO($dsn, $this->usuario, $this->password, $options);
+            
         } catch (PDOException $e) {
-            echo "Ha surgido un error al conectarse a la base de datos: " . $e->getMessage(); 
-            
-            return null;
-
+            die("Error de conexión: " . $e->getMessage());
         }
     }
+
+    // Singleton pattern para evitar múltiples conexiones
+    public static function getInstance() {
+        if (self::$instance === null) {
+            self::$instance = new self();
+        }
+        return self::$instance;
+    }
+
+    public function getConnection() {
+        return $this->db;
+    }
+
+    // Prevenir clonación
+    private function __clone() {}
+    
+    // Prevenir unserialize
+    public function __wakeup() {
+        throw new Exception("Cannot unserialize singleton");
+    }
 }
-?>

@@ -19,13 +19,15 @@ $Materias = $Modelo->get();
 </head>
 <body>
     <div class="container mt-4">
-        <nav class="mb-4">
-            <a href="../../Administradores/Pages/index.php" class="btn btn-outline-primary me-2">Administradores</a>
-            <a href="../../Docentes/Pages/index.php" class="btn btn-outline-primary me-2">Docentes</a>
-            <a href="#" class="btn btn-primary me-2">Materias</a>
-            <a href="../../Estudiantes/Pages/index.php" class="btn btn-outline-primary me-2">Estudiantes</a>
-            <a href="../../Usuarios/Controladores/Salir.php" class="btn btn-danger">Salir</a>
-        </nav>
+       <nav class="mb-4">
+    <a href="#" class="btn btn-primary me-2">Administradores</a>
+    <a href="../../Docentes/Pages/index.php" class="btn btn-outline-primary me-2">Docentes</a>
+    <a href="../../Materias/Pages/index.php" class="btn btn-outline-primary me-2">Materias</a>
+    <a href="../../cursos/Pages/index.php" class="btn btn-outline-primary me-2">Cursos</a>
+    <a href="../../periodos/Pages/index.php" class="btn btn-outline-primary me-2">Períodos</a>
+    <a href="../../Estudiantes/Pages/index.php" class="btn btn-outline-primary me-2">Estudiantes</a>
+    <a href="../../Usuarios/Controladores/Salir.php" class="btn btn-danger">Salir</a>
+</nav>
 
         <h3 class="mb-3">
             Bienvenido: <?php echo $ModeloUsuarios->getNombre(); ?> - <?php echo $ModeloUsuarios->getPerfil(); ?>
