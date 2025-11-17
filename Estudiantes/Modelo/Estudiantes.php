@@ -59,7 +59,7 @@ class Estudiantes extends Conexion {
 
     public function get(){
         $rows = [];
-        $statement = $this->db->prepare("SELECT * FROM estudiantes");
+        $statement = $this->db->prepare("SELECT * FROM estudiantes ORDER BY NOMBRE");
         $statement->execute();
         while ($result = $statement->fetch()) {
             $rows[] = $result;
@@ -68,7 +68,7 @@ class Estudiantes extends Conexion {
     }
 
     public function getById($Id){
-        $rows = null;
+        $rows = [];
         $statement = $this->db->prepare("SELECT ID_ESTUDIANTE, NOMBRE, APELLIDO, DOCUMENTO, CORREO, MATERIA, DOCENTE, PROMEDIO, FECHA_REGISTRO FROM estudiantes WHERE ID_ESTUDIANTE = :Id");
         $statement->bindParam(':Id', $Id);
         $statement->execute();
@@ -79,7 +79,7 @@ class Estudiantes extends Conexion {
     }
 
     public function search($search){
-        $rows = null;
+        $rows = [];
         $statement = $this->db->prepare("SELECT ID_ESTUDIANTE, NOMBRE, APELLIDO, DOCUMENTO, CORREO, MATERIA, DOCENTE, PROMEDIO, FECHA_REGISTRO FROM estudiantes WHERE NOMBRE LIKE CONCAT('%', :Search, '%') OR APELLIDO LIKE CONCAT('%', :Search, '%') OR DOCUMENTO LIKE CONCAT('%', :Search, '%') OR CORREO LIKE CONCAT('%', :Search, '%') OR MATERIA LIKE CONCAT('%', :Search, '%') OR DOCENTE LIKE CONCAT('%', :Search, '%')");
         $statement->bindParam(':Search', $search);
         $statement->execute();
@@ -90,7 +90,11 @@ class Estudiantes extends Conexion {
     }
 
     public function obtenerCursosEstudiante($IdEstudiante){
+<<<<<<< HEAD
         $rows = null;
+=======
+        $rows = [];
+>>>>>>> fceb6f0a7016c5602c34512e44508316f3d24c70
         $statement = $this->db->prepare("SELECT c.ID_CURSO, c.NOMBRE_CURSO, c.NIVEL FROM estudiante_cursos ec 
                                          INNER JOIN cursos c ON ec.ID_CURSO = c.ID_CURSO 
                                          WHERE ec.ID_ESTUDIANTE = :IdEstudiante AND ec.ESTADO = 'Activo'
@@ -130,7 +134,11 @@ class Estudiantes extends Conexion {
     }
 
     public function getEstudiantesCurso($IdCurso){
+<<<<<<< HEAD
         $rows = null;
+=======
+        $rows = [];
+>>>>>>> fceb6f0a7016c5602c34512e44508316f3d24c70
         $statement = $this->db->prepare("SELECT e.ID_ESTUDIANTE, e.NOMBRE, e.APELLIDO, e.DOCUMENTO FROM estudiante_cursos ec 
                                          INNER JOIN estudiantes e ON ec.ID_ESTUDIANTE = e.ID_ESTUDIANTE 
                                          WHERE ec.ID_CURSO = :IdCurso AND ec.ESTADO = 'Activo'
