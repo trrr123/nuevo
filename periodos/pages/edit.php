@@ -1,15 +1,13 @@
-<?php
-
 require_once('../../Usuarios/Modelo/Usuarios.php');
-require_once('../Modelo/Cursos.php');
+require_once('../Modelo/Periodos.php');
 
 $ModeloUsuarios = new Usuarios();
-$ModeloCursos = new Cursos();
+$ModeloPeriodos = new Periodos();
 
 $ModeloUsuarios->validateSessionAdministrador();
 
 $Id = $_GET['Id'];
-$Curso = $ModeloCursos->getById($Id);
+$Periodo = $ModeloPeriodos->getById($Id);
 
 ?>
 
@@ -17,41 +15,33 @@ $Curso = $ModeloCursos->getById($Id);
 <html lang="es">
 <head>
     <meta charset="UTF-8">
-    <title>Editar Curso</title>
+    <title>Editar Período</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
 </head>
 <body>
     <div class="container mt-5">
         <div class="row justify-content-center">
             <div class="col-md-6 col-lg-5">
-                <h2 class="mb-4 text-center">Editar Curso</h2>
+                <h2 class="mb-4 text-center">Editar Período</h2>
 
                 <form action="../Controladores/edit.php" method="POST" class="card p-4 shadow-sm">
-                    <?php if ($Curso != null): ?>
-                        <?php foreach ($Curso as $Info): ?>
+                    <?php if ($Periodo != null): ?>
+                        <?php foreach ($Periodo as $Info): ?>
                             <input type="hidden" name="Id" value="<?php echo $Id; ?>">
 
                             <div class="mb-3">
-                                <label for="NombreCurso" class="form-label">Nombre del Curso</label>
-                                <input type="text" class="form-control" name="NombreCurso" required autocomplete="off" value="<?php echo $Info['NOMBRE_CURSO']; ?>">
+                                <label for="NombrePeriodo" class="form-label">Nombre del Período</label>
+                                <input type="text" class="form-control" name="NombrePeriodo" required autocomplete="off" value="<?php echo $Info['NOMBRE_PERIODO']; ?>">
                             </div>
 
                             <div class="mb-3">
-                                <label for="Nivel" class="form-label">Nivel</label>
-                                <select name="Nivel" class="form-select" required>
-                                    <option value="<?php echo $Info['NIVEL']; ?>"><?php echo $Info['NIVEL']; ?></option>
-                                    <option value="1">Primero</option>
-                                    <option value="2">Segundo</option>
-                                    <option value="3">Tercero</option>
-                                    <option value="4">Cuarto</option>
-                                    <option value="5">Quinto</option>
-                                    <option value="6">Sexto</option>
-                                    <option value="7">Séptimo</option>
-                                    <option value="8">Octavo</option>
-                                    <option value="9">Noveno</option>
-                                    <option value="10">Décimo</option>
-                                    <option value="11">Undécimo</option>
-                                </select>
+                                <label for="FechaInicio" class="form-label">Fecha de Inicio</label>
+                                <input type="date" class="form-control" name="FechaInicio" required value="<?php echo $Info['FECHA_INICIO']; ?>">
+                            </div>
+
+                            <div class="mb-3">
+                                <label for="FechaFin" class="form-label">Fecha de Fin</label>
+                                <input type="date" class="form-control" name="FechaFin" required value="<?php echo $Info['FECHA_FIN']; ?>">
                             </div>
 
                             <div class="mb-3">

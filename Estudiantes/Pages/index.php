@@ -75,8 +75,9 @@ $Materias = $Modelo->get();
                     <td><?php echo $Estudiante['PROMEDIO'] ?></td>
                     <td><?php echo $Estudiante['FECHA_REGISTRO'] ?></td>
                     <td>
-                        <a href="edit.php?Id=<?php echo $Estudiante['ID_ESTUDIANTE'] ?>" class="btn btn-sm btn-warning mb-1">Editar</a>
-                        <a href="delete.php?Id=<?php echo $Estudiante['ID_ESTUDIANTE'] ?>" class="btn btn-sm btn-danger">Eliminar</a>
+                        <a href="asignar_cursos.php?Id=<?php echo $Estudiante['ID_ESTUDIANTE'] ?>" class="btn btn-sm btn-info mb-1" title="Asignar Cursos">Cursos</a>
+                        <a href="edit.php?Id=<?php echo $Estudiante['ID_ESTUDIANTE'] ?>" class="btn btn-sm btn-warning mb-1" title="Editar">Editar</a>
+                        <a href="delete.php?Id=<?php echo $Estudiante['ID_ESTUDIANTE'] ?>" class="btn btn-sm btn-danger" title="Eliminar">Eliminar</a>
                     </td>
                 </tr>
                 <?php 
