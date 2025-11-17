@@ -21,10 +21,10 @@ class Conexion {
             
             $this->db = new PDO($dsn, $this->usuario, $this->password, $options);
             
-            // IMPORTANTE: Retornar la conexión para que funcione con parent::__construct()
-            return $this->db;
+            // CORRECCIÓN: NO retornar nada en un constructor
             
         } catch (PDOException $e) {
+            // Mostrar error detallado en desarrollo
             die("Error de conexión: " . $e->getMessage());
         }
     }
