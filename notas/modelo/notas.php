@@ -5,7 +5,8 @@ require_once('../../Conexion.php');
 class Notas extends Conexion {
 
 	public function __construct(){
-		$this->db = parent::__construct();
+		// CORRECCIÓN: Llamar correctamente al constructor padre
+		parent::__construct();
 	}
 
 	public function add($IdEstudiante, $IdMateria, $IdCurso, $IdPeriodo, $IdDocente, $Valor){
@@ -30,7 +31,7 @@ class Notas extends Conexion {
 	}
 
 	public function getById($Id){
-		$rows = null;
+		$rows = [];
 		$statement = $this->db->prepare("SELECT * FROM notas WHERE ID_NOTA = :Id");
 		$statement->bindParam(':Id', $Id);
 		$statement->execute();
@@ -66,7 +67,7 @@ class Notas extends Conexion {
 	}
 
 	public function obtenerNotasCursoDocente($IdCurso, $IdDocente, $IdPeriodo){
-		$rows = null;
+		$rows = [];
 		$statement = $this->db->prepare("SELECT n.*, e.NOMBRE, e.APELLIDO, m.MATERIA FROM notas n 
 										 INNER JOIN estudiantes e ON n.ID_ESTUDIANTE = e.ID_ESTUDIANTE 
 										 INNER JOIN materias m ON n.ID_MATERIA = m.ID_MATERIA 
@@ -97,7 +98,7 @@ class Notas extends Conexion {
 	}
 
 	public function verificarNotaExistente($IdEstudiante, $IdMateria, $IdCurso, $IdPeriodo, $IdDocente){
-		$statement = $this->db->prepare("SELECT * FROM notas WHERE ID_ESTUDIANTE = :IdEstudiante AND ID_MATERIA = :IdMateria AND ID_CURSO = :IdCurso AND ID_PERIODO = :IdPeriodo AND ID_DOCENTE = :IdDocente");
+		$statement = $this->db->prepare("SELECT ID_NOTA FROM notas WHERE ID_ESTUDIANTE = :IdEstudiante AND ID_MATERIA = :IdMateria AND ID_CURSO = :IdCurso AND ID_PERIODO = :IdPeriodo AND ID_DOCENTE = :IdDocente");
 		$statement->bindParam(':IdEstudiante', $IdEstudiante);
 		$statement->bindParam(':IdMateria', $IdMateria);
 		$statement->bindParam(':IdCurso', $IdCurso);
@@ -111,7 +112,6 @@ class Notas extends Conexion {
 		}
 		return null;
 	}
-
 }
 
 ?>
