@@ -22,14 +22,14 @@ $Docentes = $ModeloDocentes->get();
 <body>
     <div class="container mt-4">
         <nav class="mb-4">
-    <a href="#" class="btn btn-primary me-2">Administradores</a>
-    <a href="../../Docentes/Pages/index.php" class="btn btn-outline-primary me-2">Docentes</a>
-    <a href="../../Materias/Pages/index.php" class="btn btn-outline-primary me-2">Materias</a>
-    <a href="../../cursos/Pages/index.php" class="btn btn-outline-primary me-2">Cursos</a>
-    <a href="../../periodos/Pages/index.php" class="btn btn-outline-primary me-2">Períodos</a>
-    <a href="../../Estudiantes/Pages/index.php" class="btn btn-outline-primary me-2">Estudiantes</a>
-    <a href="../../Usuarios/Controladores/Salir.php" class="btn btn-danger">Salir</a>
-</nav>
+            <a href="../../Administradores/Pages/index.php" class="btn btn-outline-primary me-2">Administradores</a>
+            <a href="#" class="btn btn-primary me-2">Docentes</a>
+            <a href="../../Materias/Pages/index.php" class="btn btn-outline-primary me-2">Materias</a>
+            <a href="../../cursos/Pages/index.php" class="btn btn-outline-primary me-2">Cursos</a>
+            <a href="../../periodos/Pages/index.php" class="btn btn-outline-primary me-2">Períodos</a>
+            <a href="../../Estudiantes/Pages/index.php" class="btn btn-outline-primary me-2">Estudiantes</a>
+            <a href="../../Usuarios/Controladores/Salir.php" class="btn btn-danger">Salir</a>
+        </nav>
 
         <h3 class="mb-3">
             Bienvenido: <?php echo $ModeloUsuarios->getNombre(); ?> - <?php echo $ModeloUsuarios->getPerfil(); ?>
@@ -63,6 +63,7 @@ $Docentes = $ModeloDocentes->get();
                         <td><?php echo $Docente['PERFIL'] ?></td>
                         <td><?php echo $Docente['ESTADO'] ?></td>
                         <td>
+                            <a href="asignar_materias.php?Id=<?php echo $Docente['ID_USUARIO'] ?>" class="btn btn-info btn-sm">Asignar Materias</a>
                             <a href="edit.php?Id=<?php echo $Docente['ID_USUARIO'] ?>" class="btn btn-warning btn-sm">Editar</a>
                             <a href="delete.php?Id=<?php echo $Docente['ID_USUARIO'] ?>" class="btn btn-danger btn-sm">Eliminar</a>
                         </td>

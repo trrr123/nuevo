@@ -45,7 +45,7 @@ $ModeloMetodos = new Metodos();
 
                     <div class="mb-3">
                         <label for="Materia" class="form-label">Materia</label>
-                        <select name="Materia" class="form-select" required>
+                        <select name="Materia" id="Materia" class="form-select" required>
                             <option value="">Seleccione</option>
                             <?php 
                             $Materias = $ModeloMetodos->getMaterias();
@@ -56,13 +56,13 @@ $ModeloMetodos = new Metodos();
                             <?php
                                 }
                             }
-                            ?>
+                            ?>	
                         </select>
                     </div>
 
                     <div class="mb-3">
                         <label for="Docente" class="form-label">Docente</label>
-                        <select name="Docente" class="form-select" required>
+                        <select name="Docente" id="Docente" class="form-select" required>
                             <option value="">Seleccione</option>
                             <?php 
                             $Docentes = $ModeloMetodos->getDocentes();
@@ -79,18 +79,20 @@ $ModeloMetodos = new Metodos();
                         </select>
                     </div>
 
-                    <div class="mb-3">
+                    <div class="mb-4">
                         <label for="Promedio" class="form-label">Promedio</label>
-                        <input type="number" class="form-control" name="Promedio" id="Promedio" required autocomplete="off" placeholder="Promedio">
+                        <input type="number" class="form-control" name="Promedio" id="Promedio" required autocomplete="off" placeholder="Promedio" step="0.01" min="0" max="100">
                     </div>
 
-                    <button type="submit" class="btn btn-success w-100">Registrar Estudiante</button> <br>
-                    <button type="button" class="btn btn-secondary w-100" onclick="window.location.href='index.php'">
-                        Cancelar
-                    </button>
+                    <div class="d-grid gap-2">
+                        <button type="submit" class="btn btn-success btn-lg">Registrar Estudiante</button>
+                        <a href="index.php" class="btn btn-secondary btn-lg">Cancelar</a>
+                    </div>
                 </form>
             </div>
         </div>
     </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>

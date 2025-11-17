@@ -4,8 +4,8 @@ require_once('../../Conexion.php');
 class Administradores extends Conexion{
 
 	public function __construct(){
-		$this->db = parent::__construct();
-	}
+        parent::__construct();
+    }
 
 	public function add($Nombre, $Apellido, $Usuario, $Password){
 		$statement = $this->db->prepare("INSERT INTO usuarios (NOMBRE, APELLIDO, USUARIO, PASSWORD, PERFIL, ESTADO) VALUES (:Nombre, :Apellido, :Usuario, :Password, 'Administrador', 'Activo')");

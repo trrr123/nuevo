@@ -5,8 +5,8 @@ require_once('../../Conexion.php');
 class Cursos extends Conexion {
 
 	public function __construct(){
-		$this->db = parent::__construct();
-	}
+        parent::__construct();
+    }
 
 	public function add($NombreCurso, $Nivel, $Descripcion){
 		$statement = $this->db->prepare("INSERT INTO cursos (NOMBRE_CURSO, NIVEL, DESCRIPCION, ESTADO, FECHA_CREACION) VALUES (:NombreCurso, :Nivel, :Descripcion, 'Activo', NOW())");
