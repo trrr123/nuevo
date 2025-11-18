@@ -3,11 +3,12 @@
 class Conexion {
     protected $db;
     
+    // Configuración para InfinityFree
     private $driver = "mysql";
-    private $host = "localhost";
-    private $dbname = "notas";
-    private $usuario = "root";
-    private $password = "";
+    private $host = "sql100.infinityfree.com";
+    private $dbname = "if0_40450257_XXX"; 
+    private $usuario = "if0_40450257";
+    private $password = "3104531285Tt-";
     private $charset = "utf8mb4";
 
     public function __construct() {
@@ -21,11 +22,9 @@ class Conexion {
             
             $this->db = new PDO($dsn, $this->usuario, $this->password, $options);
             
-            // CORRECCIÓN: NO retornar nada en un constructor
-            
         } catch (PDOException $e) {
-            // Mostrar error detallado en desarrollo
-            die("Error de conexión: " . $e->getMessage());
+            // En producción, no mostrar detalles del error
+            die("Error de conexión a la base de datos. Por favor, contacta al administrador.");
         }
     }
 }
