@@ -24,7 +24,8 @@ $Materias = $Modelo->get();
     <nav class="mb-4">
         <div class="btn-group" role="group">
             <?php if ($ModeloUsuarios->getPerfil() == 'Docente') { ?>
-                <a class="btn btn-outline-primary" href="#">Estudiantes</a>
+                <a class="btn btn-primary" href="#">Estudiantes</a>
+                <a class="btn btn-outline-primary" href="../../notas/pages/index.php">Registrar Notas</a>
             <?php } else { ?>
                 <a class="btn btn-outline-primary" href="../../Administradores/Pages/index.php">Administradores</a>
                 <a class="btn btn-outline-primary" href="../../Docentes/Pages/index.php">Docentes</a>
@@ -38,7 +39,9 @@ $Materias = $Modelo->get();
     <!-- Bienvenida -->
     <div class="mb-3">
         <h4>Bienvenido: <strong><?php echo $ModeloUsuarios->getNombre(); ?></strong> - <?php echo $ModeloUsuarios->getPerfil(); ?></h4>
-        <a class="btn btn-success mt-2" href="add.php">Registrar Estudiante</a>
+        <?php if ($ModeloUsuarios->getPerfil() == 'Administrador') { ?>
+            <a class="btn btn-success mt-2" href="add.php">Registrar Estudiante</a>
+        <?php } ?>
     </div>
 
     <!-- Tabla de estudiantes -->
@@ -51,10 +54,14 @@ $Materias = $Modelo->get();
                     <th>Apellido</th>
                     <th>Documento</th>
                     <th>Correo</th>
-                    <th>Materia</th>
-                    <th>Docente</th>
-                    <th>Promedio</th>
-                    <th>Fecha Registro</th>
+                    <?php if ($ModeloUsuarios->getPerfil() == 'Docente') { ?>
+                        <th>Promedio</th>
+                    <?php } else { ?>
+                        <th>Materia</th>
+                        <th>Docente</th>
+                        <th>Promedio</th>
+                        <th>Fecha Registro</th>
+                    <?php } ?>
                     <th>Acciones</th>
                 </tr>
             </thead>
@@ -70,14 +77,33 @@ $Materias = $Modelo->get();
                     <td><?php echo $Estudiante['APELLIDO'] ?></td>
                     <td><?php echo $Estudiante['DOCUMENTO'] ?></td>
                     <td><?php echo $Estudiante['CORREO'] ?></td>
-                    <td><?php echo $Estudiante['MATERIA'] ?></td>
-                    <td><?php echo $Estudiante['DOCENTE'] ?></td>
-                    <td><?php echo $Estudiante['PROMEDIO'] ?></td>
-                    <td><?php echo $Estudiante['FECHA_REGISTRO'] ?></td>
+                    <?php if ($ModeloUsuarios->getPerfil() == 'Docente') { ?>
+                        <td><?php echo $Estudiante['PROMEDIO'] ?></td>
+                    <?php } else { ?>
+                        <td><?php echo $Estudiante['MATERIA'] ?></td>
+                        <td><?php echo $Estudiante['DOCENTE'] ?></td>
+                        <td><?php echo $Estudiante['PROMEDIO'] ?></td>
+                        <td><?php echo $Estudiante['FECHA_REGISTRO'] ?></td>
+                    <?php } ?>
                     <td>
-                        <a href="asignar_cursos.php?Id=<?php echo $Estudiante['ID_ESTUDIANTE'] ?>" class="btn btn-sm btn-info mb-1" title="Asignar Cursos">Cursos</a>
-                        <a href="edit.php?Id=<?php echo $Estudiante['ID_ESTUDIANTE'] ?>" class="btn btn-sm btn-warning mb-1" title="Editar">Editar</a>
-                        <a href="delete.php?Id=<?php echo $Estudiante['ID_ESTUDIANTE'] ?>" class="btn btn-sm btn-danger" title="Eliminar">Eliminar</a>
+                        <?php if ($ModeloUsuarios->getPerfil() == 'Docente') { ?>
+                            <!-- Botón para ver/agregar notas del estudiante -->
+                            <a href="ver_notas.php?Id=<?php echo $Estudiante['ID_ESTUDIANTE'] ?>" 
+                               class="btn btn-sm btn-primary mb-1" 
+                               title="Ver y Agregar Notas">
+                                📝 Notas
+                            </a>
+                        <?php } else { ?>
+                            <a href="asignar_cursos.php?Id=<?php echo $Estudiante['ID_ESTUDIANTE'] ?>" 
+                               class="btn btn-sm btn-info mb-1" 
+                               title="Asignar Cursos">Cursos</a>
+                            <a href="edit.php?Id=<?php echo $Estudiante['ID_ESTUDIANTE'] ?>" 
+                               class="btn btn-sm btn-warning mb-1" 
+                               title="Editar">Editar</a>
+                            <a href="delete.php?Id=<?php echo $Estudiante['ID_ESTUDIANTE'] ?>" 
+                               class="btn btn-sm btn-danger" 
+                               title="Eliminar">Eliminar</a>
+                        <?php } ?>
                     </td>
                 </tr>
                 <?php 
