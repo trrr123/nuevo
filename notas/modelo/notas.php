@@ -5,19 +5,28 @@ require_once('../../Conexion.php');
 class Notas extends Conexion {
 
 	public function __construct(){
-		// CORRECCIÓN: Llamar correctamente al constructor padre
 		parent::__construct();
 	}
 
 	public function add($IdEstudiante, $IdMateria, $IdCurso, $IdPeriodo, $IdDocente, $Valor){
-		$statement = $this->db->prepare("INSERT INTO notas (ID_ESTUDIANTE, ID_MATERIA, ID_CURSO, ID_PERIODO, ID_DOCENTE, VALOR_NOTA, FECHA_REGISTRO) VALUES (:IdEstudiante, :IdMateria, :IdCurso, :IdPeriodo, :IdDocente, :Valor, NOW())");
-		$statement->bindParam(':IdEstudiante', $IdEstudiante);
-		$statement->bindParam(':IdMateria', $IdMateria);
-		$statement->bindParam(':IdCurso', $IdCurso);
-		$statement->bindParam(':IdPeriodo', $IdPeriodo);
-		$statement->bindParam(':IdDocente', $IdDocente);
-		$statement->bindParam(':Valor', $Valor);
-		return $statement->execute();
+		try {
+			$statement = $this->db->prepare("INSERT INTO notas (ID_ESTUDIANTE, ID_MATERIA, ID_CURSO, ID_PERIODO, ID_DOCENTE, VALOR_NOTA, FECHA_REGISTRO) VALUES (:IdEstudiante, :IdMateria, :IdCurso, :IdPeriodo, :IdDocente, :Valor, NOW())");
+			$statement->bindParam(':IdEstudiante', $IdEstudiante);
+			$statement->bindParam(':IdMateria', $IdMateria);
+			$statement->bindParam(':IdCurso', $IdCurso);
+			$statement->bindParam(':IdPeriodo', $IdPeriodo);
+			$statement->bindParam(':IdDocente', $IdDocente);
+			$statement->bindParam(':Valor', $Valor);
+			
+			if ($statement->execute()) {
+				return true;
+			}
+			return false;
+		} catch (PDOException $e) {
+			// Log del error para debugging
+			error_log("Error en add(): " . $e->getMessage());
+			return false;
+		}
 	}
 
 	public function get(){
@@ -42,7 +51,8 @@ class Notas extends Conexion {
 	}
 
 	public function obtenerNotasEstudiante($IdEstudiante, $IdPeriodo = null){
-		$query = "SELECT n.*, m.MATERIA, e.NOMBRE, e.APELLIDO, p.NOMBRE_PERIODO FROM notas n 
+		$query = "SELECT n.*, m.MATERIA, e.NOMBRE, e.APELLIDO, p.NOMBRE_PERIODO 
+				  FROM notas n 
 				  INNER JOIN materias m ON n.ID_MATERIA = m.ID_MATERIA 
 				  INNER JOIN estudiantes e ON n.ID_ESTUDIANTE = e.ID_ESTUDIANTE 
 				  INNER JOIN periodos p ON n.ID_PERIODO = p.ID_PERIODO 
@@ -67,50 +77,78 @@ class Notas extends Conexion {
 	}
 
 	public function obtenerNotasCursoDocente($IdCurso, $IdDocente, $IdPeriodo){
-		$rows = [];
-		$statement = $this->db->prepare("SELECT n.*, e.NOMBRE, e.APELLIDO, m.MATERIA FROM notas n 
-										 INNER JOIN estudiantes e ON n.ID_ESTUDIANTE = e.ID_ESTUDIANTE 
-										 INNER JOIN materias m ON n.ID_MATERIA = m.ID_MATERIA 
-										 WHERE n.ID_CURSO = :IdCurso AND n.ID_DOCENTE = :IdDocente AND n.ID_PERIODO = :IdPeriodo 
-										 ORDER BY e.NOMBRE, m.MATERIA");
-		$statement->bindParam(':IdCurso', $IdCurso);
-		$statement->bindParam(':IdDocente', $IdDocente);
-		$statement->bindParam(':IdPeriodo', $IdPeriodo);
-		$statement->execute();
-		
-		while ($result = $statement->fetch()) {
-			$rows[] = $result;
+		try {
+			$rows = [];
+			$statement = $this->db->prepare("SELECT n.*, e.NOMBRE, e.APELLIDO, m.MATERIA 
+											 FROM notas n 
+											 INNER JOIN estudiantes e ON n.ID_ESTUDIANTE = e.ID_ESTUDIANTE 
+											 INNER JOIN materias m ON n.ID_MATERIA = m.ID_MATERIA 
+											 WHERE n.ID_CURSO = :IdCurso 
+											 AND n.ID_DOCENTE = :IdDocente 
+											 AND n.ID_PERIODO = :IdPeriodo 
+											 ORDER BY e.NOMBRE, m.MATERIA");
+			$statement->bindParam(':IdCurso', $IdCurso);
+			$statement->bindParam(':IdDocente', $IdDocente);
+			$statement->bindParam(':IdPeriodo', $IdPeriodo);
+			$statement->execute();
+			
+			while ($result = $statement->fetch()) {
+				$rows[] = $result;
+			}
+			return $rows;
+		} catch (PDOException $e) {
+			error_log("Error en obtenerNotasCursoDocente(): " . $e->getMessage());
+			return [];
 		}
-		return $rows;
 	}
 
 	public function update($Id, $Valor){
-		$statement = $this->db->prepare("UPDATE notas SET VALOR_NOTA = :Valor WHERE ID_NOTA = :Id");
-		$statement->bindParam(':Id', $Id);
-		$statement->bindParam(':Valor', $Valor);
-		return $statement->execute();
+		try {
+			$statement = $this->db->prepare("UPDATE notas SET VALOR_NOTA = :Valor WHERE ID_NOTA = :Id");
+			$statement->bindParam(':Id', $Id);
+			$statement->bindParam(':Valor', $Valor);
+			return $statement->execute();
+		} catch (PDOException $e) {
+			error_log("Error en update(): " . $e->getMessage());
+			return false;
+		}
 	}
 
 	public function delete($Id){
-		$statement = $this->db->prepare("DELETE FROM notas WHERE ID_NOTA = :Id");
-		$statement->bindParam(':Id', $Id);
-		return $statement->execute();
+		try {
+			$statement = $this->db->prepare("DELETE FROM notas WHERE ID_NOTA = :Id");
+			$statement->bindParam(':Id', $Id);
+			return $statement->execute();
+		} catch (PDOException $e) {
+			error_log("Error en delete(): " . $e->getMessage());
+			return false;
+		}
 	}
 
 	public function verificarNotaExistente($IdEstudiante, $IdMateria, $IdCurso, $IdPeriodo, $IdDocente){
-		$statement = $this->db->prepare("SELECT ID_NOTA FROM notas WHERE ID_ESTUDIANTE = :IdEstudiante AND ID_MATERIA = :IdMateria AND ID_CURSO = :IdCurso AND ID_PERIODO = :IdPeriodo AND ID_DOCENTE = :IdDocente");
-		$statement->bindParam(':IdEstudiante', $IdEstudiante);
-		$statement->bindParam(':IdMateria', $IdMateria);
-		$statement->bindParam(':IdCurso', $IdCurso);
-		$statement->bindParam(':IdPeriodo', $IdPeriodo);
-		$statement->bindParam(':IdDocente', $IdDocente);
-		$statement->execute();
-		
-		if ($statement->rowCount() > 0) {
-			$result = $statement->fetch();
-			return $result['ID_NOTA'];
+		try {
+			$statement = $this->db->prepare("SELECT ID_NOTA FROM notas 
+											WHERE ID_ESTUDIANTE = :IdEstudiante 
+											AND ID_MATERIA = :IdMateria 
+											AND ID_CURSO = :IdCurso 
+											AND ID_PERIODO = :IdPeriodo 
+											AND ID_DOCENTE = :IdDocente");
+			$statement->bindParam(':IdEstudiante', $IdEstudiante);
+			$statement->bindParam(':IdMateria', $IdMateria);
+			$statement->bindParam(':IdCurso', $IdCurso);
+			$statement->bindParam(':IdPeriodo', $IdPeriodo);
+			$statement->bindParam(':IdDocente', $IdDocente);
+			$statement->execute();
+			
+			if ($statement->rowCount() > 0) {
+				$result = $statement->fetch();
+				return $result['ID_NOTA'];
+			}
+			return null;
+		} catch (PDOException $e) {
+			error_log("Error en verificarNotaExistente(): " . $e->getMessage());
+			return null;
 		}
-		return null;
 	}
 }
 

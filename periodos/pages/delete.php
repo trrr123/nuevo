@@ -1,3 +1,4 @@
+<?php
 require_once('../../Usuarios/Modelo/Usuarios.php');
 require_once('../Modelo/Periodos.php');
 

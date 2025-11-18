@@ -5,8 +5,8 @@ require_once('../../Conexion.php');
 class Periodos extends Conexion {
 
 	public function __construct(){
-		$this->db = parent::__construct();
-	}
+    parent::__construct(); // ✅ CORRECTO
+}
 
 	public function add($NombrePeriodo, $FechaInicio, $FechaFin, $Descripcion){
 		$statement = $this->db->prepare("INSERT INTO periodos (NOMBRE_PERIODO, FECHA_INICIO, FECHA_FIN, DESCRIPCION, ESTADO) VALUES (:NombrePeriodo, :FechaInicio, :FechaFin, :Descripcion, 'Activo')");
