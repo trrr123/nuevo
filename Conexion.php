@@ -3,16 +3,30 @@
 class Conexion {
     protected $db;
     
-    // Configuración para InfinityFree
     private $driver = "mysql";
-    private $host = "sql100.infinityfree.com";
-    private $dbname = "if0_40450257_XXX"; 
-    private $usuario = "if0_40450257";
-    private $password = "3104531285Tt-";
+    private $host;
+    private $dbname;
+    private $usuario;
+    private $password;
     private $charset = "utf8mb4";
 
     public function __construct() {
         try {
+            // Detectar si estamos en Railway (variables de entorno)
+            if (getenv('MYSQL_HOST')) {
+                // Configuración para Railway
+                $this->host = getenv('MYSQL_HOST');
+                $this->dbname = getenv('MYSQL_DATABASE');
+                $this->usuario = getenv('MYSQL_USER');
+                $this->password = getenv('MYSQL_PASSWORD');
+            } else {
+                // Configuración local (desarrollo)
+                $this->host = "localhost";
+                $this->dbname = "notas";
+                $this->usuario = "root";
+                $this->password = "";
+            }
+            
             $dsn = "{$this->driver}:host={$this->host};dbname={$this->dbname};charset={$this->charset}";
             $options = [
                 PDO::ATTR_ERRMODE            => PDO::ERRMODE_EXCEPTION,
@@ -23,8 +37,11 @@ class Conexion {
             $this->db = new PDO($dsn, $this->usuario, $this->password, $options);
             
         } catch (PDOException $e) {
-            // En producción, no mostrar detalles del error
-            die("Error de conexión a la base de datos. Por favor, contacta al administrador.");
+            if (getenv('MYSQL_HOST')) {
+                die("Error de conexión a la base de datos. Por favor, contacta al administrador.");
+            } else {
+                die("Error de conexión: " . $e->getMessage());
+            }
         }
     }
 }

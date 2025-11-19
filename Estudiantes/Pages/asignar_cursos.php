@@ -15,7 +15,8 @@ $Estudiante = $ModeloEstudiantes->getById($IdEstudiante);
 $TodosLosCursos = $ModeloCursos->get();
 
 // Obtener cursos ya asignados
-$conexion = new mysqli("localhost", "root", "", "notas");
+require_once(__DIR__ . '/../../mysqli_helper.php');
+$conexion = getConnection();
 if ($conexion->connect_error) die("Error: " . $conexion->connect_error);
 
 $queryCursosAsignados = "SELECT ec.ID, c.ID_CURSO, c.NOMBRE_CURSO, c.NIVEL FROM estudiante_cursos ec 

@@ -10,7 +10,8 @@ if($_POST){
     $IdCurso = $_POST['IdCurso'];
 
     // Verificar si ya está asignado
-    $conexion = new mysqli("localhost", "root", "", "notas");
+require_once(__DIR__ . '/../../mysqli_helper.php');
+$conexion = getConnection();
     if ($conexion->connect_error) die("Error: " . $conexion->connect_error);
 
     $queryVerificar = "SELECT * FROM estudiante_cursos 

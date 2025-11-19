@@ -9,7 +9,8 @@ if($_POST){
     $Id = $_POST['Id'];
     $IdEstudiante = $_POST['IdEstudiante'];
 
-    $conexion = new mysqli("localhost", "root", "", "notas");
+    require_once(__DIR__ . '/../../mysqli_helper.php');
+$conexion = getConnection();
     if ($conexion->connect_error) die("Error: " . $conexion->connect_error);
 
     // Cambiar estado a Inactivo en lugar de eliminar (mejor para auditoría)

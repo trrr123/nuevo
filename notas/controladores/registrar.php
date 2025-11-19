@@ -93,7 +93,8 @@ if($_POST){
     // Actualizar promedio del estudiante
     if ($exito) {
         try {
-            $conexion = new mysqli("localhost", "root", "", "notas");
+         require_once(__DIR__ . '/../../mysqli_helper.php');
+$conexion = getConnection();
             if (!$conexion->connect_error) {
                 $queryPromedio = "SELECT AVG(VALOR_NOTA) as promedio FROM notas WHERE ID_ESTUDIANTE = " . intval($IdEstudiante);
                 $resultPromedio = $conexion->query($queryPromedio);
